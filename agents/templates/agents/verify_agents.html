@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="verify-container">
+    <div class="verify-header">
+        <h1>Agent Verification Dashboard</h1>
+        <p class="subtitle">Review and verify agent applications</p>
+    </div>
+
+    <div class="agents-grid">
+        {% for agent in agents %}
+            <div class="agent-card {% if agent.is_verified %}verified{% endif %}">
+                <div class="agent-header">
+                    <div class="agent-avatar">
+                        {% if agent.profile_picture %}
+                            <img src="{{ agent.profile_picture.url }}" alt="{{ agent.user.username }}">
+                        {% else %}
+                            <i class="fas fa-user-circle"></i>
+                        {% endif %}
+                    </div>
+                    <div class="agent-info">
+                        <h3>{{ agent.user.get_full_name }}</h3>
+                        <span class="agent-status">
+                            {% if agent.is_verified %}
+                                <i class="fas fa-check-circle"></i> Verified
+                            {% else %}
+                                <i class="fas fa-clock"></i> Pending
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="agent-details">
+                    <p><i class="fas fa-envelope"></i> {{ agent.user.email }}</p>
+                    <p><i class="fas fa-phone"></i> {{ agent.phone_number }}</p>
+                    <p><i class="fas fa-id-card"></i> License: {{ agent.license_number }}</p>
+                </div>
+
+                <div class="agent-documents">
+                    <h4>Documents</h4>
+                    <a href="{{ agent.id_proof.url }}" target="_blank" class="doc-link">
+                        <i class="fas fa-file-alt"></i> View ID Proof
+                    </a>
+                    <a href="{{ agent.license_document.url }}" target="_blank" class="doc-link">
+                        <i class="fas fa-file-alt"></i> View License
+                    </a>
+                </div>
+
+                <div class="agent-actions">
+                    {% if not agent.is_verified %}
+                        <form method="post" action="{% url 'verify_agent' agent.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="verify-btn">Verify Agent</button>
+                        </form>
+                        <button class="reject-btn">Reject</button>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="no-agents">
+                <i class="fas fa-user-slash"></i>
+                <p>No pending agent verifications</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .verify-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .verify-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .verify-header h1 {
+        color: #1a73e8;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        color: #5f6368;
+        font-size: 1.1rem;
+    }
+
+    .agents-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .agent-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .agent-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .agent-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .agent-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #e3f2fd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .agent-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .agent-avatar i {
+        font-size: 2rem;
+        color: #1a73e8;
+    }
+
+    .agent-info h3 {
+        margin: 0;
+        color: #202124;
+        font-size: 1.2rem;
+    }
+
+    .agent-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #5f6368;
+    }
+
+    .verified .agent-status {
+        color: #34a853;
+    }
+
+    .agent-details {
+        margin-bottom: 1.5rem;
+    }
+
+    .agent-details p {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0.5rem 0;
+        color: #5f6368;
+    }
+
+    .doc-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #1a73e8;
+        text-decoration: none;
+        margin: 0.5rem 1rem 0.5rem 0;
+    }
+
+    .doc-link:hover {
+        text-decoration: underline;
+    }
+
+    .agent-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .verify-btn, .reject-btn {
+        flex: 1;
+        padding: 0.8rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+
+    .verify-btn {
+        background: #1a73e8;
+        color: white;
+    }
+
+    .verify-btn:hover {
+        background: #1557b0;
+    }
+
+    .reject-btn {
+        background: #dc3545;
+        color: white;
+    }
+
+    .reject-btn:hover {
+        background: #bb2d3b;
+    }
+
+    .no-agents {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        color: #5f6368;
+    }
+
+    .no-agents i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .verify-header h1 {
+            font-size: 2rem;
+        }
+
+        .agents-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

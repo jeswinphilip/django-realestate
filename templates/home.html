@@ -1,0 +1,596 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% load static %}
+{% load humanize %}
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #4285f4;
+            --light-blue: #e8f0fe;
+            --off-white: #f8f9fa;
+            --pure-white: #ffffff;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--off-white);
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+        
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+        
+        .hero-section {
+            background-image: url("{% static 'images/hero-bg.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            color: rgba(0, 0, 0, 0,0);
+            text-align: center;
+            padding: 50px 0;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero-quote {
+            font-style: italic;
+            font-size: 1.25rem;
+            margin: 1.5rem 0;
+            opacity: 0.9;
+        }
+        
+        .search-box {
+            background-color: var(--pure-white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 2rem;
+        }
+        
+        .search-box .nav-tabs {
+            border-bottom: none;
+            margin-bottom: 20px;
+        }
+        
+        .search-box .nav-link {
+            border: none;
+            font-weight: bold;
+            color: #555;
+            border-radius: 30px;
+            padding: 8px 20px;
+            margin-right: 10px;
+        }
+        
+        .search-box .nav-link.active {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        .btn-find {
+            background-color: var(--primary-blue);
+            color: white;
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-find:hover {
+            background-color: var(--secondary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+        }
+        
+        .section-heading {
+            position: relative;
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .section-heading:after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 4px;
+            background-color: var(--primary-blue);
+            margin-top: 15px;
+        }
+        
+        .property-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 25px;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .property-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .property-features {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            margin-top: 15px;
+            color: #666;
+        }
+        
+        .top-cities img {
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        
+        .city-card {
+            position: relative;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .city-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .city-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 20px;
+        }
+        
+        .service-card {
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .testimonial-card {
+            border: none;
+            border-radius: 12px;
+        }
+        
+        .cta-section {
+            background-color: var(--primary-blue);
+            padding: 60px 0;
+        }
+        
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 70px 0 20px;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            background-color: #1a2530;
+            padding: 20px 0;
+            color: #aaa;
+        }
+        
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--primary-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="display-4 fw-bold mb-3">Find Your Perfect Home</h1>
+                <p class="hero-quote">"Home is where your story begins. Let us help you find the perfect setting."</p>
+                <h2 class="h4 mb-4">Discover properties for Buy, Sell, or Rent across India</h2>
+                <form action="{% url 'filter_properties' %}" class="mt-4">
+                    <div class="search-box">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#buy">Buy</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#rent">Rent</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#sell">Sell</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="buy">
+                                <div class="row g-3">
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control form-control-lg" placeholder="Search by location, property type, or keyword...">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-find w-100 h-100">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="rent">
+                                <!-- Same structure as buy tab -->
+                                <div class="row g-3">
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control form-control-lg" placeholder="Search rental properties...">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-find w-100 h-100">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="sell">
+                                <!-- Same structure as buy tab -->
+                                <div class="row g-3">
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control form-control-lg" placeholder="Enter your property details...">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-find w-100 h-100">List Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->    
+    <section class="cta-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-4 mb-lg-0">
+                    <h2 class="text-white fw-bold">Ready to Find Your Dream Property?</h2>
+                    <p class="lead text-white mb-0 opacity-90">Join thousands of satisfied customers and start your property journey today</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'filter_properties' %}" class="btn btn-light btn-lg rounded-pill px-5 py-3 fw-bold">Find your perfect property</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-light btn-lg rounded-pill px-5 py-3 fw-bold">Get Started</a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Featured Properties -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <h2 class="section-heading">Featured Properties</h2>
+                    <p class="text-muted">Handpicked properties curated just for you</p>
+                </div>
+                <div class="col-md-4 text-md-end align-self-end">
+                    <a href="{% url 'property_list' %}" class="btn btn-outline-primary">View All Properties</a>
+                </div>
+            </div>
+            <div class="row">
+                {% for property in featured_properties %}
+                <div class="col-md-4">
+                    <div class="card property-card">
+                        <div class="position-relative">
+                            <img src="{{ property.images.first.image.url }}" class="card-img-top" alt="property image" style="height: 220px; object-fit: cover;">
+                            <span class="badge bg-primary position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill">{{ property.get_status_display }}</span>
+                        </div>
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold">₹{{ property.price|intcomma }}</h5>
+                            <p class="card-text h6">{{ property.title }}</p>
+                            <p class="text-muted small mt-2"><i class="fas fa-map-marker-alt me-2"></i> {{ property.address }}</p>
+                            <div class="property-features">
+                                <span><i class="fas fa-bed me-2 text-primary"></i> {{ property.bedrooms }} Beds</span>
+                                <span><i class="fas fa-bath me-2 text-primary"></i> {{ property.bathrooms }} Baths</span>
+                                <span><i class="fas fa-vector-square me-2 text-primary"></i> {{ property.area_sqft }} sq.ft</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 d-flex justify-content-between p-4">
+                            <a href="{% url 'property_detail' property.id %}" class="btn btn-primary">View Details</a>
+     
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <p>No featured properties available at the moment.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Cities -->
+  <section class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="section-heading mx-auto">Explore Properties in Top Cities</h2>
+                <p class="text-muted">Find your dream home in major cities across India</p>
+            </div>
+        </div>
+        <div class="row top-cities g-4">
+            <div class="col-md-4 col-sm-6">
+                <a href="{% url 'district_properties' district='Ernakulam' %}">
+                    <div class="city-card">
+                        <img src="{% static 'images/ernakulam.jpeg' %}" alt="Kochi" class="img-fluid w-100">
+                        <div class="city-overlay">
+                            <h4 class="fw-bold">Ernakulam</h4>
+                            <p class="mb-0">{{ ernakulam_count }} Properties</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <a href="{% url 'district_properties' district='Kottayam' %}">
+                    <div class="city-card">
+                        <img src="{% static 'images/kottayam.jpg' %}" alt="Kottayam" class="img-fluid w-100">
+                        <div class="city-overlay">
+                            <h4 class="fw-bold">Kottayam</h4>
+                            <p class="mb-0">{{ kottayam_count }} Properties</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <a href="{% url 'district_properties' district='Alappuzha' %}">
+                    <div class="city-card">
+                        <img src="{% static 'images/Alappuzha.jpg' %}" alt="Alappuzha" class="img-fluid w-100">
+                        <div class="city-overlay">
+                            <h4 class="fw-bold">Alappuzha</h4>
+                            <p class="mb-0">{{ alappuzha_count }} Properties</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <a href="{% url 'district_properties' district='Kozhikode' %}">
+                    <div class="city-card">
+                        <img src="{% static 'images/Kozhikode.jpg' %}" alt="Kozhikode" class="img-fluid w-100">
+                        <div class="city-overlay">
+                            <h4 class="fw-bold">Kozhikode</h4>
+                            <p class="mb-0">{{ kozhikode_count }} Properties</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <a href="{% url 'district_properties' district='Kannur' %}">
+                    <div class="city-card">
+                        <img src="{% static 'images/Kannur.jpg' %}" alt="Kannur" class="img-fluid w-100">
+                        <div class="city-overlay">
+                            <h4 class="fw-bold">Kannur</h4>
+                            <p class="mb-0">{{ Kannur_count }} Properties</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <a href="{% url 'district_properties' district='Thiruvananthapuram' %}">
+                    <div class="city-card">
+                        <img src="{% static 'images/Trivandrum.jpg' %}" alt="Thiruvananthapuram" class="img-fluid w-100">
+                        <div class="city-overlay">
+                            <h4 class="fw-bold">Thiruvananthapuram</h4>
+                            <p class="mb-0">{{ Thiruvananthapuram_count }} Properties</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Services Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="section-heading mx-auto">Our Services</h2>
+                    <p class="text-muted">Comprehensive real estate solutions for all your needs</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm service-card">
+                        <div class="card-body text-center p-5">
+                            <div class="rounded-circle bg-primary bg-opacity-10 p-4 d-inline-block mb-4">
+                                <i class="fas fa-home text-primary fa-2x"></i>
+                            </div>
+                            <h4 class="fw-bold mb-3">Buy Property</h4>
+                            <p class="text-muted">Find your dream home from thousands of verified listings with detailed information and virtual tours.</p>
+                            <a href="#" class="btn btn-outline-primary mt-3 rounded-pill px-4">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm service-card">
+                        <div class="card-body text-center p-5">
+                            <div class="rounded-circle bg-primary bg-opacity-10 p-4 d-inline-block mb-4">
+                                <i class="fas fa-key text-primary fa-2x"></i>
+                            </div>
+                            <h4 class="fw-bold mb-3">Rent Property</h4>
+                            <p class="text-muted">Explore rental homes and apartments across major Indian cities with verified owners and no brokerage options.</p>
+                            <a href="#" class="btn btn-outline-primary mt-3 rounded-pill px-4">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm service-card">
+                        <div class="card-body text-center p-5">
+                            <div class="rounded-circle bg-primary bg-opacity-10 p-4 d-inline-block mb-4">
+                                <i class="fas fa-tag text-primary fa-2x"></i>
+                            </div>
+                            <h4 class="fw-bold mb-3">Sell Property</h4>
+                            <p class="text-muted">List your property for free and reach genuine buyers. Our platform ensures maximum visibility for your listing.</p>
+                            <a href="#" class="btn btn-outline-primary mt-3 rounded-pill px-4">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="section-heading mx-auto">What Our Customers Say</h2>
+                    <p class="text-muted">Trusted by thousands of satisfied customers</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm testimonial-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-3">
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <p class="card-text">"Found my dream apartment within a week! The search filters made it so easy to find exactly what I was looking for. Highly recommend this platform."</p>
+                            <div class="d-flex align-items-center mt-4">
+                                <div class="flex-shrink-0">
+                                    <img src="{% static 'images/user1.jpg' %}" alt="User" class="rounded-circle" width="60" height="60" style="object-fit: cover;">
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="fw-bold mb-1">Rahul Sharma</h6>
+                                    <small class="text-muted">Bought apartment in Mumbai</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm testimonial-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-3">
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                            <p class="card-text">"As a property owner, I was able to list my property and find qualified tenants within days. The process was seamless and the support team was very helpful."</p>
+                            <div class="d-flex align-items-center mt-4">
+                                <div class="flex-shrink-0">
+                                    <img src="{% static 'images/user2.jpg' %}" alt="User" class="rounded-circle" width="60" height="60" style="object-fit: cover;">
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="fw-bold mb-1">Priya Patel</h6>
+                                    <small class="text-muted">Property owner in Bangalore</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm testimonial-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-3">
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <p class="card-text">"The home loan assistance saved me a lot of time and paperwork. Got approved for a great rate and closed on my new home much faster than expected!"</p>
+                            <div class="d-flex align-items-center mt-4">
+                                <div class="flex-shrink-0">
+                                    <img src="{% static 'images/user3.jpg' %}" alt="User" class="rounded-circle" width="60" height="60" style="object-fit: cover;">
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="fw-bold mb-1">Amit Verma</h6>
+                                    <small class="text-muted">First-time buyer in Delhi</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+
+   
+{% endblock  %}
