@@ -141,6 +141,33 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
         }
         
+        /* Property Card Image Improvements */
+        .property-card .card-img-top {
+            height: 280px;
+            object-fit: contain;
+            object-position: center;
+            transition: transform 0.3s ease;
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+        
+        .property-card:hover .card-img-top {
+            transform: scale(1.02);
+        }
+        
+        /* Responsive design for property cards */
+        @media (max-width: 768px) {
+            .property-card .card-img-top {
+                height: 240px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .property-card .card-img-top {
+                height: 200px;
+            }
+        }
+        
         .property-features {
             display: flex;
             justify-content: space-between;
@@ -343,7 +370,7 @@
                 <div class="col-md-4">
                     <div class="card property-card">
                         <div class="position-relative">
-                            <img src="{{ property.images.first.image.url }}" class="card-img-top" alt="property image" style="height: 220px; object-fit: cover;">
+                            <img src="{{ property.images.first.image.url }}" class="card-img-top" alt="property image">
                             <span class="badge bg-primary position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill">{{ property.get_status_display }}</span>
                         </div>
                         <div class="card-body p-4">

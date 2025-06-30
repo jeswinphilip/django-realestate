@@ -72,8 +72,12 @@ body {
 
 .carousel-inner img {
     width: 100%;
-    height: 400px;
-    object-fit: cover;
+    height: 500px;
+    object-fit: contain;
+    object-position: center;
+    max-height: 70vh;
+    background-color: #f8f9fa;
+    padding: 10px;
 }
 
 .carousel-item {
@@ -420,7 +424,7 @@ body {
         grid-template-columns: 1fr;
     }
     .property-header-info h1 {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
     .property-price {
         font-size: 1.5rem;
@@ -430,6 +434,7 @@ body {
     }
     .carousel-inner img {
         height: 300px;
+        max-height: 50vh;
     }
 }
 
@@ -445,5 +450,43 @@ body {
     }
     .carousel-inner img {
         height: 250px;
+        max-height: 40vh;
+    }
+}
+
+/* Property List Image Fixes */
+.image-slider {
+    position: relative;
+    height: 250px; /* Increased from 200px */
+    overflow: hidden;
+}
+
+.slide img {
+    width: 100%;
+    height: 250px; /* Increased from 200px */
+    object-fit: contain;
+    object-position: center;
+    background-color: #f8f9fa;
+    padding: 10px;
+}
+
+/* Responsive for property list */
+@media (max-width: 768px) {
+    .image-slider {
+        height: 200px;
+    }
+    
+    .slide img {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .image-slider {
+        height: 180px;
+    }
+    
+    .slide img {
+        height: 180px;
     }
 }
